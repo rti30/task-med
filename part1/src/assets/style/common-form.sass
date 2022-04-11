@@ -1,0 +1,48 @@
+.client
+   &__body
+      display: flex
+      justify-content: center
+   &__sub-title
+      margin: 0 0 20px 0
+      @media (min-width:$tabletWidth + 'px')
+         margin: 0
+   &__button
+      text-align: center
+.client-form
+   width: calcSize(270, 450, $minWidth, $tabletWidth)
+   @media (min-width:$tabletWidth + 'px')
+      width: 700px
+      display: grid
+      gap: 0 25px
+      grid-template-areas: 'personal submit' 'address submit' 'pasport submit'
+      .personal
+         grid-area: personal
+      .address
+         grid-area: address
+      .pasport
+         grid-area: pasport
+      .client__button
+         grid-area: submit
+         position: relative
+         .btn-form
+            position: sticky
+            top: 50%
+            transform: translate(0, -50%)
+            &:active
+               transform: translate(0, -50%) scale(0.95)
+
+   &__section
+      &:not(:last-child)
+         margin: 0 0 30px 0
+
+   @media (any-hover: hover)
+      &:hover
+         cursor: pointer
+
+   @media (any-hover: hover)
+      &:hover
+         cursor: pointer
+
+   &__invalid
+      color: $c-danger
+      font-weight: 700

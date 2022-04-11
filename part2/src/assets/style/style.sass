@@ -1,0 +1,139 @@
+@import "/normolize.css"
+@import "null"
+body
+   font-family: $fontFamily
+   font-weight: 400
+   font-size: 14px
+   color: $c-main
+   background-color: $bg-color
+   &.lock
+      overflow: hidden
+
+//</ОБНУЛЕНИЕ, ОБЩИЕ ПАРАМЕТРЫ>===============================================================================================
+//<ОБОЛОЧКА>===========================================================================================================
+
+.wrapper
+   width: 100%
+   min-height: 100%
+   display: flex
+   flex-direction: column
+
+//</ОБОЛОЧКА>===========================================================================================================
+.page
+   flex: 1 1 auto
+   display: flex
+   flex-direction: column
+
+//<ОСНОВНАЯ СЕТКА>===========================================================================================================
+.content-width
+   margin: 0 25px
+   /*    @media (min-width: $tabletWidth + "px") 
+    margin: 0px auto;
+    padding: 0 10px;
+    @media (min-width: $PCWidth + "px") {
+    max-width: 1000px;
+	 
+//*<ЧАСТО ПОВТОРЯЮЩЕЕСЯ ЭЛЕМЕНТЫ>====================================================================================================
+.title
+   font-weight: 700
+   font-size: 24px
+   line-height: math.div(33, 24)
+   text-align: center
+   position: relative
+   padding: 0 0 11px 0
+   margin-bottom: 25px
+
+   @media (min-width: $tabletWidth + "px")
+      font-size: 36px
+      line-height: math.div(49, 36)
+      margin-bottom: 45px
+
+   @media (min-width: $PCWidth + "px")
+      font-size: 42px
+      line-height: math.div(57, 42)
+      padding: 0 0 22px 0
+
+   &::before
+      content: ""
+      display: block
+      height: 5px
+      width: 110px
+      background-color: $c-main
+      position: absolute
+      bottom: 0
+      left: 50%
+      transform: translate(-50%, 0)
+      @media (min-width: $tabletWidth + "px")
+         width: 220px
+
+      @media (min-width: $PCWidth + "px")
+         width: 190px
+
+.sub-title
+   font-size: 18px
+   font-weight: 700
+   line-height: math.div(22, 18)
+   @media (min-width: $tabletWidth + "px")
+      font-size: 24px
+      line-height: math.div(30, 24)
+
+   @media (min-width: $PCWidth + "px")
+      font-size: 33px
+      line-height: math.div(41, 33)
+
+//*</ПОВТОРЯЮЩЕЕСЯ ЭЛЕМЕНТЫ>====================================================================================================
+
+//*<UI ЭЛЕМЕНТЫ>================================================================================================================
+.label
+   font-size: 16px
+   font-weight: 700
+   transition: top 0.3s ease-in-out, font-size 0.15s ease-in-out
+   padding: 2px 4px
+   white-space: nowrap
+.btn
+   display: flex
+   width: 100%
+   justify-content: center
+   align-items: center
+   padding: 0 20px
+   border-radius: 4px
+   height: 40px
+   font-size: 17px
+   font-weight: 700
+   color: $c-main
+   background-color: $c-light
+   border: 1px solid $border-color
+   cursor: pointer
+   user-select: none
+   transition: all 0.3s ease 0s
+   &:focus-visible
+      box-shadow: 0 0 0 2px #666
+   @media (any-hover: hover)
+      &:hover
+         background-color: #5d11e5
+   @media (min-width:$tabletWidth + 'px')
+      display: flex
+
+   &:active
+      transform: scale(0.95)
+   &:disabled
+      pointer-events: none
+      opacity: 0.65
+
+.input
+   width: 20px
+   height: 20px
+
+//*<Анимация и тайминги>================================================================================================================
+.label
+.fade-enter-active,
+.fade-leave-active
+   transition: opacity 0.5s
+   opacity: 0
+
+.fade-enter-to
+   opacity: 1
+
+.fade-enter,
+.fade-leave-to
+   opacity: 0

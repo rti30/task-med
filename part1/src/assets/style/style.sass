@@ -1,0 +1,306 @@
+@import "/normolize.css"
+@import "null"
+body
+   font-family: $fontFamily
+   font-weight: 400
+   font-size: 14px
+   color: $c-main
+   background-color: $bg-color
+   &.lock
+      overflow: hidden
+
+//</ОБНУЛЕНИЕ, ОБЩИЕ ПАРАМЕТРЫ>===============================================================================================
+@import "common-form"
+//<ОБОЛОЧКА>===========================================================================================================
+
+.wrapper
+   width: 100%
+   min-height: 100%
+   display: flex
+   flex-direction: column
+
+//</ОБОЛОЧКА>===========================================================================================================
+.page
+   flex: 1 1 auto
+   display: flex
+   flex-direction: column
+
+//<ОСНОВНАЯ СЕТКА>===========================================================================================================
+.content-width
+   margin: 0 25px
+   /*    @media (min-width: $tabletWidth + "px") 
+    margin: 0px auto;
+    padding: 0 10px;
+    @media (min-width: $PCWidth + "px") {
+    max-width: 1000px;
+	 
+
+//</ОСНОВНАЯ СЕТКА>===========================================================================================================
+
+//<ПОДКЛЮЧЕНИЕ ФАЙЛОВ UI СТИЛЕЙ, ФОРМ И ГОТОВЫХ КЛАССОВ>====================================================================================================
+//</ПОДКЛЮЧЕНИЕ ФАЙЛОВ UI СТИЛЕЙ, ФОРМ И ГОТОВЫХ КЛАССОВ>====================================================================================================
+
+//<ПОДКЛЮЧЕНИЕ ФАЙЛОВ СТИЛЕЙ СТРАНИЦ И ЭЛЕМЕНТОВ>====================================================================================================
+
+//</ПОДКЛЮЧЕНИЕ ФАЙЛОВ СТИЛЕЙ СТРАНИЦ И ЭЛЕМЕНТОВ>====================================================================================================
+
+//<ОСНОВНОЙ БЛОК>====================================================================================================
+
+//===================================================================================================================================
+
+//*<ЧАСТО ПОВТОРЯЮЩЕЕСЯ ЭЛЕМЕНТЫ>====================================================================================================
+.title
+   font-weight: 700
+   font-size: 24px
+   line-height: math.div(33, 24)
+   text-align: center
+   position: relative
+   padding: 0 0 11px 0
+   margin-bottom: 25px
+
+   @media (min-width: $tabletWidth + "px")
+      font-size: 36px
+      line-height: math.div(49, 36)
+      margin-bottom: 45px
+
+   @media (min-width: $PCWidth + "px")
+      font-size: 42px
+      line-height: math.div(57, 42)
+      padding: 0 0 22px 0
+
+   &::before
+      content: ""
+      display: block
+      height: 5px
+      width: 110px
+      background-color: $c-main
+      position: absolute
+      bottom: 0
+      left: 50%
+      transform: translate(-50%, 0)
+      @media (min-width: $tabletWidth + "px")
+         width: 220px
+
+      @media (min-width: $PCWidth + "px")
+         width: 190px
+
+.sub-title
+   font-size: 18px
+   font-weight: 700
+   line-height: math.div(22, 18)
+   @media (min-width: $tabletWidth + "px")
+      font-size: 24px
+      line-height: math.div(30, 24)
+
+   @media (min-width: $PCWidth + "px")
+      font-size: 33px
+      line-height: math.div(41, 33)
+
+//*</ПОВТОРЯЮЩЕЕСЯ ЭЛЕМЕНТЫ>====================================================================================================
+
+//*<UI ЭЛЕМЕНТЫ>================================================================================================================
+.item-input
+   &__input
+      display: block
+      width: 100%
+      height: 45px
+      padding: 5px 10px
+      line-height: 1.5
+      border: 1px solid $border-color
+      border-radius: 5px
+      transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out
+      color: $bg-color
+      font-size: 16px
+      line-height: math.div(24, 14)
+      @media (min-width: $tabletWidth + "px")
+         font-size: 18px
+         height: 55px
+      @media (any-hover: hover)
+         &:hover
+            cursor: pointer
+            box-shadow: 0 0 8px 0 rgba(0,0,0,1)
+      &:focus
+         box-shadow: 0 0 8px 0 rgba(0,0,0,1)
+      &--light
+         color: $c-main
+      &--warn
+         border: 1px solid $c-danger
+   &__label
+      position: absolute
+      font-size: 16px
+      font-weight: 700
+      top: 50%
+      left: 50%
+      transform: translate(-50%, -50%)
+      transition: top 0.3s ease-in-out, font-size 0.15s ease-in-out
+      padding: 2px 4px
+      white-space: nowrap
+      color: $bg-color
+      &--light
+         color: $c-main
+         @media (min-width:$tabletWidth + 'px')
+            font-size: 18px
+
+   &.active &__label
+      left: 50%
+      top: 0
+      font-size: 14px
+      transform: translate(-50%, -50%)
+      background-color: $bg-color
+      border-radius: $border-r
+      color: $c-main
+      border: 1px solid $border-color
+      @media (min-width:$tabletWidth + 'px')
+         font-size: 16px
+   &.active &__wrapper
+      border: none
+   &__wrapper
+      position: relative
+      border-radius: $border-r
+
+.select
+   &__button
+      position: relative
+      display: flex
+      align-items: center
+      align-content: center
+
+   &__options
+      position: absolute
+      z-index: 1
+      width: 100%
+      font-size: 14px
+      @media (min-width:$tabletWidth + 'px')
+         font-size: 16px
+
+   &__option
+      padding: 12px 5px
+      background-color: $bg-color
+      border: 1px solid $border-color
+      cursor: pointer
+      @media (any-hover: hover)
+         &:hover
+            background-color: $c-light
+      &--active
+         background-color: $border-color
+      @media (min-width:$tabletWidth + 'px')
+         padding: 15px 5px
+.btn-form
+   display: flex
+   width: 100%
+   justify-content: center
+   align-items: center
+   padding: 0 20px
+   border-radius: 4px
+   height: 40px
+   font-size: 17px
+   font-weight: 700
+   color: $c-main
+   background-color: $c-light
+   border: 1px solid $border-color
+   cursor: pointer
+   user-select: none
+   transition: all 0.3s ease 0s
+   &:focus-visible
+      box-shadow: 0 0 0 2px #666
+   @media (any-hover: hover)
+      &:hover
+         background-color: #5d11e5
+   @media (min-width:$tabletWidth + 'px')
+      display: flex
+
+   &:active
+      transform: scale(0.95)
+   &:disabled
+      pointer-events: none
+      opacity: 0.65
+
+.checkbox-item
+   display: flex
+   align-items: center
+   font-size: 16px
+   @media (min-width:$tabletWidth + 'px')
+      font-size: 18px
+   &__box
+      position: absolute
+      opacity: 0
+      z-index: -1
+
+   &__label
+      display: flex
+      align-items: center
+      justify-content: center
+      cursor: pointer
+      font-weight: 700
+      &::before
+         content: ''
+         width: 18px
+         height: 18px
+         border: 1px solid #adb5bd
+         border-radius: 4px
+         margin-right: 5px
+
+   &.active
+      .checkbox-item__label
+         &::before
+            background-color: #b3d7ff
+            border-color: #b3d7ff
+   &.checked
+      .checkbox-item__label
+         &::before
+            border-color: #80bdff
+            background-color: #b3d7ff
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e")
+
+.radio-item
+   display: flex
+   align-items: center
+   font-size: 14px
+   @media (min-width: $tabletWidth + "px")
+      font-size: 16px
+   &__radio
+      position: absolute
+      opacity: 0
+      z-index: -1
+
+   &__label
+      display: flex
+      align-items: center
+      justify-content: center
+      cursor: pointer
+      font-weight: 700
+      &::before
+         content: ''
+         width: 18px
+         height: 18px
+         border: 1px solid #adb5bd
+         border-radius: 4px
+         margin-right: 5px
+         border-radius: 50%
+
+   &.active
+      .radio-item__label
+         &::before
+            background-color: #b3d7ff
+            border-color: #b3d7ff
+   &.checked
+      .radio-item__label
+         &::before
+            background-repeat: no-repeat
+            background-position: center center
+            background-size: 50% 50%
+            border-color: #0b76ef
+            background-color: #0b76ef
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e")
+
+.fade-enter-active,
+.fade-leave-active
+   transition: opacity 0.5s
+   opacity: 0
+
+.fade-enter-to
+   opacity: 1
+
+.fade-enter,
+.fade-leave-to
+   opacity: 0
