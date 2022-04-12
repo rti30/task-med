@@ -90,10 +90,8 @@ export default {
   computed: {},
   methods: {
     select(option) {
-      console.log(this.selected);
       const has = (option) => this.selected?.some((item) => item === option);
       if (has(option)) {
-        console.log("11111");
         this.$emit(
           "select",
           this.selected.filter((item) => item !== option)
