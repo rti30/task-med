@@ -84,20 +84,25 @@ export default {
   data() {
     return {
       isFocus: false,
-      selectedArr: [],
+      //  selectedArr: [],
     };
   },
   computed: {},
   methods: {
     select(option) {
-      const has = (option) => this.selectedArr.some((item) => item === option);
+      console.log(this.selected);
+      const has = (option) => this.selected?.some((item) => item === option);
       if (has(option)) {
-        this.selectedArr = this.selectedArr.filter((item) => item !== option);
+        console.log("11111");
+        this.$emit(
+          "select",
+          this.selected.filter((item) => item !== option)
+        );
       } else {
-        this.selectedArr.push(option);
+        const newArr = [...this.selected];
+        newArr.push(option);
+        this.$emit("select", newArr);
       }
-
-      this.$emit("select", this.selectedArr);
     },
     hideOptions(e, root) {
       if (!e.target.closest(`.${this.mainClass}`) || !!root) {
