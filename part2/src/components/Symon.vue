@@ -308,11 +308,13 @@ export default {
     height: 110px
     color: #fff
     transition: box-shadow 300ms ease-in-out, background 200ms ease
-    &:hover
-      box-shadow: 0 0 10px 0 #3498db inset, 0 0 10px 4px #3498db
-      &:disabled
-        box-shadow: none
-        cursor: default
+    @media (any-hover: hover)
+      &:hover
+        box-shadow: 0 0 10px 0 #3498db inset, 0 0 10px 4px #3498db
+        &:disabled
+          box-shadow: none
+          cursor: default
+
     @media (min-width:$tabletWidth + 'px')
       width: 180px
       height: 180px
