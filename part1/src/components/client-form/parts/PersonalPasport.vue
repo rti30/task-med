@@ -2,70 +2,76 @@
   <div class="client-form__section pasport">
     <h2 class="client__sub-title pasport__title sub-title">Паспорт</h2>
     <clientSelect
-      :options="type.names"
-      :selected="typeSelected"
+      :options="formData.type.names"
+      :selected="isData.type"
       :label="'Тип документа'"
-      @select="$emit('update:typePassport', $event)"
+      @select="emitForm('type' , $event)"
       class="pasport__item"
       :mainClass="`pasport__type`"
       :invalid="invalid"
       :name="`type`"
     />
-    <div
-      class="pasport__item item-input"
-      v-for="item, name in inputs"
-      :class="[item.class, {'active': focusItem===name||$props[name]}]"
+
+    <client-input
+      v-for="item, name in formData.inputs"
+      :class="[item.class, {'active': focusItem===name||isData[name]}, 'pasport__item']"
       :key="name"
-      @click="focusInput($event,'pasport__item')"
-    >
-      <div class="item-input__wrapper">
-        <input
-          @input.passive="inputUpdate(name, $event.target.value.trim())"
-          class="client-form__input item-input__input"
-          type="text"
-          @focus="focusItem = name;"
-          @blur="focusItem=null"
-          :value="$props[name]"
-        >
-        <label class="client-form__label item-input__label">{{item.label}}</label>
-      </div>
-    </div>
+      :warnClass="`client-form__invalid client-form__invalid--required`"
+      :isInvalid="false"
+      :inputClass="`client-form__input`"
+      :isValue="isData[name]"
+      :labelClass="`client-form__label`"
+      :labelValue="item.label"
+      @isInput="emitForm(name , $event)"
+      @inputFocus="focusItem = name"
+      @inputBlur="focusItem=null"
+      @click.native="focusInput($event,'pasport__item')"
+    ></client-input>
   </div>
 </template>
 
 <script>
 import ClientSelect from "@/common/ui-select.vue";
 import focusInput from "@/mixins/input-methods.js";
+import ClientInput from "@/common/ui-input.vue";
 export default {
   name: "client-pasport",
   components: {
     ClientSelect,
+    ClientInput,
   },
   mixins: [focusInput],
-  props: ["typeSelected", "serial", "number", "issuedBy", "date", "invalid"],
+  props: ["isData", "invalid"],
 
   data() {
     return {
       focusItem: null,
-      inputs: {
-        serial: {
-          label: "Серия",
+      formData: {
+        inputs: {
+          serial: {
+            label: "Серия",
+          },
+          number: {
+            label: "Номер",
+          },
+          issuedBy: {
+            label: "Кем выдан",
+          },
+          date: {
+            label: "Дата выдачи",
+          },
         },
-        number: {
-          label: "Номер",
+        type: {
+          label: "Тип документа",
+          names: ["Паспорт", "Свидетельство о рождении", "Вод. удостоверение"],
         },
-        issuedBy: {
-          label: "Кем выдан",
-        },
-        date: {
-          label: "Дата выдачи",
-        },
-      },
-      type: {
-        label: "Тип документа",
-        names: ["Паспорт", "Свидетельство о рождении", "Вод. удостоверение"],
       },
     };
+  },
+  methods: {
+    emitForm(name, value) {
+      this.$emit("formData", { name, value });
+    },
   },
 };
 </script>

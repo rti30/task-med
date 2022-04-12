@@ -180,8 +180,12 @@ export default {
             }, this.speed);
           } else if (this.treck.length === this.stepCounter + 1) {
             this.playing = true;
+            const controls = document.querySelector(".circle-game__controls");
+            console.log(controls);
+            controls.classList.add("circle-game__controls--sucsess");
             setTimeout(() => {
               this.stepCounter = 0;
+              controls.classList.remove("circle-game__controls--sucsess");
               this.addSound();
               this.play();
             }, this.durationRound);
@@ -302,6 +306,8 @@ export default {
     border-radius: 50%
     border: 1px black solid
     overflow: hidden
+    &--sucsess
+      border: 5px green solid
 
   &__control
     width: 110px

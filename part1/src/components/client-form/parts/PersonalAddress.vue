@@ -1,48 +1,39 @@
 <template>
   <div class="client-form__section address">
     <h2 class="client__sub-title address__title sub-title">Адрес</h2>
-    <div
-      class="address__item item-input"
-      v-for="item, name in address"
-      :class="[item.class, {'active': focusItem===name||$props[name]}]"
-      :key="item.id"
-      @click="focusInput($event,'address__item')"
-    >
-
-      <div
-        class="item-input__wrapper"
-        :class="{'item-input__input--warn':(name in invalid)&&!invalid[name].required&&invalid[name].$dirty}"
-      >
-        <input
-          @input.passive="inputUpdate(name, $event.target.value.trim())"
-          class="client-form__input item-input__input"
-          type="text"
-          @focus="focusItem = name;"
-          @blur="focusItem=null"
-          :value="$props[name]"
-        >
-        <label class="client-form__label item-input__label">{{item.label}}</label>
-      </div>
-      <div
-        class="client-form__invalid client-form__invalid--required"
-        v-if="(name in invalid)&&!invalid[name].required&&invalid[name].$dirty"
-      >Поле должно быть заполнено
-      </div>
-    </div>
+    <client-input
+      v-for="item, name in formData"
+      :class="[item.class, {'active': focusItem===name||isData[name]}, 'address__item']"
+      :key="name"
+      :warnClass="`client-form__invalid client-form__invalid--required`"
+      :isInvalid="(name in invalid)&&!invalid[name].required&&invalid[name].$dirty"
+      :inputClass="`client-form__input`"
+      :isValue="isData[name]"
+      :labelClass="`client-form__label`"
+      :labelValue="item.label"
+      @isInput="emitForm(name , $event)"
+      @inputFocus="focusItem = name"
+      @inputBlur="focusItem=null"
+      @click.native="focusInput($event,'address__item')"
+    ></client-input>
   </div>
 </template>
 
 <script>
 import focusInput from "@/mixins/input-methods.js";
+
+import ClientInput from "@/common/ui-input.vue";
 export default {
   name: "client-address",
-  components: {},
+  components: {
+    ClientInput,
+  },
   mixins: [focusInput],
-  props: ["index", "country", "region", "city", "street", "house", "invalid"],
+  props: ["isData", "invalid"],
   data() {
     return {
       focusItem: null,
-      address: {
+      formData: {
         index: {
           label: "Индекс",
         },
@@ -63,6 +54,11 @@ export default {
         },
       },
     };
+  },
+  methods: {
+    emitForm(name, value) {
+      this.$emit("formData", { name, value });
+    },
   },
 };
 </script>

@@ -8,40 +8,19 @@
           class="client__form client-form"
         >
           <form-personal
-            :surname.sync="form.main.surname"
-            :name.sync="form.main.name"
-            :patronymic.sync="form.main.patronymic"
-            :gender.sync="form.main.gender"
-            :genderChecked="form.main.gender"
-            :notice.sync="form.main.notice"
-            :smsNotice="form.main.notice"
-            :doctor.sync="form.main.doctor"
-            :doctorSelected="form.main.doctor"
-            :groups.sync="form.main.groups"
-            :groupsSelected="form.main.groups"
-            @birthday="form.main.birthday=$event"
-            :propsBirthday="form.main.birthday"
-            @phone="form.main.phone=$event"
-            :propsPhone="form.main.phone"
+            :isData="form.main"
+            @formData="setData('main', $event)"
             :invalid="$v.form.main"
           />
           <form-address
-            :index.sync="form.address.index"
-            :country.sync="form.address.country"
-            :region.sync="form.address.region"
-            :city.sync="form.address.city"
-            :street.sync="form.address.street"
-            :house.sync="form.address.house"
+            :isData="form.address"
+            @formData="setData('address', $event)"
             :invalid="$v.form.address"
           />
 
           <form-pasport
-            :typeSelected="form.pasport.type"
-            :typePassport.sync="form.pasport.type"
-            :serial.sync="form.pasport.serial"
-            :number.sync="form.pasport.number"
-            :issuedBy.sync="form.pasport.issuedBy"
-            :date.sync="form.pasport.date"
+            :isData="form.pasport"
+            @formData="setData('pasport', $event)"
             :invalid="$v.form.pasport"
           />
           <div class="client__button">
@@ -130,6 +109,9 @@ export default {
       this.form = JSON.parse(JSON.stringify(this.formTemplate));
       this.$v.$reset();
       this.$emit("message", "Форма успешно создана");
+    },
+    setData(nameData, { name, value }) {
+      this.form[nameData][name] = value;
     },
   },
   beforeMount() {

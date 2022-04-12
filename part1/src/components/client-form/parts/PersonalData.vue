@@ -1,47 +1,36 @@
 <template>
   <div class="client-form__section personal">
     <h2 class="client__sub-title personal__title sub-title">Личная информация</h2>
-    <div
-      class="personal__item item-input"
-      v-for="item, name in main.inputs"
+    <client-input
+      v-for="item, name in formData.inputs"
+      :class="[item.class, {'active': focusItem===name||isData[name]}, 'personal__item']"
       :key="name"
-      @click="focusInput($event,'personal__item')"
-      :class="[item.class, {'active': focusItem===name||$props[name]}]"
-    >
-      <div
-        class="item-input__wrapper"
-        :class="{'item-input__input--warn':(name in invalid)&&!invalid[name].required&&invalid[name].$dirty}"
-      >
-        <input
-          @input.passive="inputUpdate(name,$event.target.value.trim())"
-          class="client-form__input item-input__input"
-          type="text"
-          @focus="focusItem = name;"
-          @blur="focusItem=null"
-          :value="$props[name]"
-        >
-        <label class="client-form__label item-input__label">{{item.label}}</label>
-      </div>
-      <div
-        class="client-form__invalid client-form__invalid--required"
-        v-if="(name in invalid)&&!invalid[name].required&&invalid[name].$dirty"
-      >Поле должно быть заполнено
-      </div>
-    </div>
+      :warnClass="`client-form__invalid client-form__invalid--required`"
+      :isInvalid="(name in invalid)&&!invalid[name].required&&invalid[name].$dirty"
+      :inputClass="`client-form__input`"
+      :isValue="isData[name]"
+      :labelClass="`client-form__label`"
+      :labelValue="item.label"
+      @isInput="emitForm(name , $event)"
+      @inputFocus="focusItem = name"
+      @inputBlur="focusItem=null"
+      @click.native="focusInput($event,'personal__item')"
+    ></client-input>
+
     <div class="personal__gender personal-gender">
       <h4 class="personal__sub-title personal-gender__title">Пол</h4>
       <div
         class="personal__item radio-item"
-        v-for="item in radioGender"
-        :class="[item.class, {'checked': genderChecked===item.value}]"
+        v-for="item in formData.radioGender"
+        :class="[item.class, {'checked': isData.gender===item.value}]"
         :key="item.value"
         @pointerdown="addEventClass($event, 'active')"
         @pointerout="removeEventClass($event, 'active')"
         @pointerover="addEventClass($event, 'active')"
-        @click="$emit(`update:${item.name}`, item.value)"
+        @click="emitForm(item.name , item.value)"
       >
         <input
-          @change="$emit(`update:${item.name}`, item.value)"
+          @change="emitForm(item.name , item.value)"
           class="client-form__radio radio-item__radio"
           type="radio"
           :name="item.name"
@@ -51,22 +40,22 @@
       </div>
       <div
         class="personal-gender__delete"
-        @click="$emit(`update:gender`, '')"
-        v-if="genderChecked"
+        @click="emitForm('gender' , '')"
+        v-if="isData.gender"
       >&#8635;</div>
     </div>
     <div
       class="personal__item checkbox-item"
-      v-for="item in checkboxSms"
-      :class="[item.class, {'checked': smsNotice}]"
+      v-for="item in formData.checkboxSms"
+      :class="[item.class, {'checked': isData.notice}]"
       :key="item.id"
       @pointerdown="addEventClass($event, 'active')"
       @pointerout="removeEventClass($event, 'active')"
       @pointerover="addEventClass($event, 'active')"
-      @click="$emit(`update:${item.name}`, !smsNotice)"
+      @click="emitForm(item.name , !isData.notice)"
     >
       <input
-        @change="$emit(`update:${item.name}`, !smsNotice)"
+        @change="emitForm(item.name , !isData.notice)"
         class="checkbox-item__box"
         type="checkbox"
         :name="item.name"
@@ -76,30 +65,30 @@
       <label class="client-form__label checkbox-item__label">{{item.label}}</label>
     </div>
     <clientSelect
-      :options="select.doctors"
-      :selected="doctorSelected"
-      @select="$emit('update:doctor', $event)"
+      :options="formData.select.doctors"
+      :selected="isData.doctor"
+      @select="emitForm('doctor' , $event)"
       :label="'Лечащий врач'"
       class="personal__item"
       :mainClass="`personal__doctor`"
     />
     <clientMultiselect
-      :options="multiSelect.groups"
-      :selected="groupsSelected"
-      @select="$emit('update:groups', $event)"
+      :options="formData.multiSelect.groups"
+      :selected="isData.groups"
+      @select="emitForm('groups' , $event)"
       class="personal__item"
       :mainClass="`personal__groups`"
       :invalid="invalid"
     />
     <client-birthday
       :invalid="invalid"
-      @birthday="$emit('birthday', $event)"
-      :propsValue="propsBirthday"
+      @birthday="emitForm('birthday' , $event)"
+      :propsValue="isData.birthday"
     />
     <client-phone
-      @phone="$emit('phone', $event)"
+      @phone="emitForm('phone' , $event)"
       :invalid="invalid"
-      :propsValue="propsPhone"
+      :propsValue="isData.phone"
     />
   </div>
 </template>
@@ -111,6 +100,7 @@ import ClientBirthday from "@/common/input-birthday.vue";
 import ClientPhone from "@/common/input-phone.vue";
 import customDelete from "@/mixins/input-delete.js";
 import focusInput from "@/mixins/input-methods.js";
+import ClientInput from "@/common/ui-input.vue";
 export default {
   name: "client-data",
   components: {
@@ -118,38 +108,15 @@ export default {
     ClientMultiselect,
     ClientBirthday,
     ClientPhone,
+    ClientInput,
   },
   mixins: [customDelete, focusInput],
-  props: {
-    surname: { default: "" },
-    name: { default: "" },
-    patronymic: { default: "" },
-    genderChecked: {
-      default: "",
-    },
-    smsNotice: {
-      default: false,
-    },
-    doctorSelected: {
-      default: "",
-    },
-    groupsSelected: {
-      default: [],
-    },
-    propsPhone: {
-      default: "",
-    },
-    propsBirthday: {
-      default: "",
-    },
-    invalid: {
-      default: {},
-    },
-  },
+  props: ["isData", "invalid"],
   data() {
     return {
       focusItem: null,
-      main: {
+
+      formData: {
         inputs: {
           surname: {
             label: "Фамилия",
@@ -164,39 +131,38 @@ export default {
             class: "personal__patronymic",
           },
         },
-      },
+        radioGender: [
+          {
+            label: "Мужской",
+            value: "men",
+            class: "personal__radio",
+            name: "gender",
+          },
+          {
+            value: "women",
+            label: "Женский",
+            class: "personal__radio",
+            name: "gender",
+          },
+        ],
 
-      radioGender: [
-        {
-          label: "Мужской",
-          value: "men",
-          class: "personal__radio",
-          name: "gender",
+        checkboxSms: [
+          {
+            id: "smsNotice",
+            label: "Не отправлять СМС",
+            class: "personal__smsNotice",
+            name: "notice",
+          },
+        ],
+        select: {
+          doctors: ["Не выбрано", "Иванов", "Захаров", "Чернышева"],
         },
-        {
-          value: "women",
-          label: "Женский",
-          class: "personal__radio",
-          name: "gender",
+        multiSelect: {
+          groups: ["VIP", "Проблемные", "ОМС"],
         },
-      ],
-      checkboxSms: [
-        {
-          id: "smsNotice",
-          label: "Не отправлять СМС",
-          class: "personal__smsNotice",
-          name: "notice",
-        },
-      ],
-      select: {
-        doctors: ["Не выбрано", "Иванов", "Захаров", "Чернышева"],
-      },
-      multiSelect: {
-        groups: ["VIP", "Проблемные", "ОМС"],
       },
     };
   },
-  computed: {},
   methods: {
     addEventClass(e, name) {
       const item = e.target.closest(".checkbox-item");
@@ -205,6 +171,9 @@ export default {
     removeEventClass(e, name) {
       const item = e.target.closest(".checkbox-item");
       item?.classList.remove(name);
+    },
+    emitForm(name, value) {
+      this.$emit("formData", { name, value });
     },
   },
 };
