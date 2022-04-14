@@ -3,7 +3,9 @@
     id="app"
     class="page"
   >
-    <AppSymon />
+    <div class="content-width">
+      <AppSymon />
+    </div>
   </main>
 </template>
 
